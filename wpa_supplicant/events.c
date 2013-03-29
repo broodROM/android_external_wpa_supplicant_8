@@ -2272,6 +2272,11 @@ void wpa_supplicant_event(void *ctx, enum wpa_event_type event,
 			wpa_printf(MSG_ERROR, "Retrying assoc "
 			"Iteration:%d", wpa_s->assoc_retries);
 			wpa_supplicant_cancel_auth_timeout(wpa_s);
+			
+			if (wpa_s->current_ssid->auth_alg & WPA_AUTH_ALG_OPEN && wpa_s->current_ssid->auth_alg != WPA_AUTH_ALG_OPEN)
+				wpa_s->current_ssid->auth_alg &= ~WPA_AUTH_ALG_OPEN;
+			else if (wpa_s->current_ssid->auth_alg & WPA_AUTH_ALG_SHARED && wpa_s->current_ssid->auth_alg != WPA_AUTH_ALG_SHARED)
+				wpa_s->current_ssid->auth_alg &= ~WPA_AUTH_ALG_SHARED;
 
 			/* Clear the states */
 			wpa_sm_notify_disassoc(wpa_s->wpa);
